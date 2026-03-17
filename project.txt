@@ -1,0 +1,52 @@
+Project 4 — DevSync AI
+"The AI project manager that lives inside your tools"
+A SaaS where a client and freelancer both connect their tools (GitHub, Notion, Slack, Linear), and an AI agent autonomously keeps everything in sync, generates progress reports, catches blockers, and sends updates — without anyone having to manually write a status update ever again.
+
+The problem it solves
+Right now a freelancer working with a client has to:
+
+Manually update Notion/Linear tickets after pushing code
+Write weekly progress reports from scratch
+Chase clients for feedback across 3 different platforms
+Remind themselves what they worked on for invoicing
+
+This is pure friction. Every freelancer hates it. Every client complains about visibility. Nobody has fixed it because it requires connecting multiple tools and understanding context across all of them simultaneously — which is exactly what MCP enables.
+
+Why ChatGPT can't replace this
+This isn't "AI writes a report." The AI:
+
+Reads your actual GitHub commits via MCP
+Updates your actual Notion tickets via MCP
+Posts to your actual Slack channel via MCP
+Tracks time context across all of them over weeks
+Knows the project requirements from day one and measures progress against them
+
+The output is real actions in real tools, not text in a chat box. That's the moat.
+
+How it works
+Developer pushes code to GitHub
+          ?
+MCP Agent reads commit + diff
+          ?
+Cross-references Notion ticket requirements
+          ?
+Auto-updates ticket status in Notion
+          ?
+Posts a human-readable update in Slack
+          ?
+Flags any blockers or missed requirements
+          ?
+Weekly: generates client-ready PDF progress report
+Nobody pressed a button. It just happened.
+
+Tech stack mapping
+Next.js + tRPC + Drizzle + Neon     ? dashboard, settings, report history
+BetterAuth                           ? auth + OAuth for tool connections
+FastAPI                              ? MCP agent orchestration, AI logic
+MCP servers                          ? GitHub, Notion, Slack, Linear
+Stripe                               ? $19/mo per project subscription
+GSAP                                 ? landing page (this needs to look stunning)
+
+Monetization
+PlanPriceLimitFree$01 project, basic syncingPro$19/moUnlimited projects, PDF reportsAgency$49/moTeam members, client portal
+The pricing is per freelancer, not per project. Sticky because once your workflow depends on it, you don't cancel.
