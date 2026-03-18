@@ -4,6 +4,7 @@ import "./globals.css";
 import { TRPCReactProvider } from "@/trpc/client";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import Header from "@/components/navbar";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
@@ -34,9 +35,11 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          <Header />
-          {children}
-          <Toaster position="top-center" />
+          <TooltipProvider>
+            <Header />
+            {children}
+            <Toaster position="top-center" />
+          </TooltipProvider>
         </body>
       </TRPCReactProvider>
     </html>
