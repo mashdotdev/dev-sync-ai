@@ -3,8 +3,10 @@ import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import { TRPCReactProvider } from "@/trpc/client";
 import { cn } from "@/lib/utils";
+import { Toaster } from "@/components/ui/sonner";
+import Header from "@/components/navbar";
 
-const inter = Inter({subsets:['latin'],variable:'--font-sans'});
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,12 +29,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn("font-sans", inter.variable)}>
+    <html lang="en" className={cn("font-sans", inter.variable,)}>
       <TRPCReactProvider>
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
+          <Header />
           {children}
+          <Toaster position="top-center" />
         </body>
       </TRPCReactProvider>
     </html>
