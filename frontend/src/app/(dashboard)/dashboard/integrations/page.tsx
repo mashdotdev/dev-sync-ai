@@ -5,6 +5,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -22,6 +23,7 @@ import {
   CheckCircle2,
   ExternalLink,
   Loader2,
+  AlertCircle,
 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -61,6 +63,67 @@ const INTEGRATIONS = [
     scopes: "issues:read, issues:write",
   },
 ];
+
+function GitHubRepoInput({
+  projectId,
+  owner,
+  currentRepo,
+}: {
+  projectId: string;
+  owner: string;
+  currentRepo: string;
+}) {
+  const trpc = useTRPC();
+  const queryClient = useQueryClient();
+  const [repo, setRepo] = useState(currentRepo);
+
+  const save = useMutation(
+    trpc.integrations.updateMetadata.mutationOptions({
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: [["integrations", "getStatus"]] });
+        toast.success("Repository saved");
+      },
+      onError: () => toast.error("Failed to save repository"),
+    })
+  );
+
+  return (
+    <div className="flex flex-col gap-2 rounded-md border border-amber-200 bg-amber-50 p-3 dark:border-amber-900 dark:bg-amber-950/30">
+      <div className="flex items-center gap-1.5 text-xs font-medium text-amber-700 dark:text-amber-400">
+        <AlertCircle className="size-3.5" />
+        Repository not set — sync won&apos;t run
+      </div>
+      <p className="text-xs text-muted-foreground">
+        Enter the repo name to watch (connected as <span className="font-mono font-medium">{owner}</span>)
+      </p>
+      <div className="flex gap-2">
+        <div className="flex items-center rounded-md border bg-muted px-2 text-xs text-muted-foreground">
+          {owner}/
+        </div>
+        <Input
+          className="h-7 text-xs"
+          placeholder="repo-name"
+          value={repo}
+          onChange={(e) => setRepo(e.target.value)}
+        />
+        <Button
+          size="sm"
+          className="h-7 text-xs"
+          disabled={!repo.trim() || save.isPending}
+          onClick={() =>
+            save.mutate({
+              projectId,
+              type: "github",
+              metadata: { owner, repo: repo.trim() },
+            })
+          }
+        >
+          {save.isPending ? <Loader2 className="size-3 animate-spin" /> : "Save"}
+        </Button>
+      </div>
+    </div>
+  );
+}
 
 export default function IntegrationsPage() {
   const trpc = useTRPC();
@@ -162,6 +225,12 @@ export default function IntegrationsPage() {
               const status = getStatus(integration.type);
               const isConnected = status?.connected ?? false;
               const Icon = integration.icon;
+              const meta = status?.metadata ?? {};
+
+              const needsRepo =
+                integration.type === "github" &&
+                isConnected &&
+                !meta.repo;
 
               return (
                 <Card key={integration.type}>
@@ -190,6 +259,25 @@ export default function IntegrationsPage() {
                       {integration.description}
                     </CardDescription>
                   </CardHeader>
+
+                  {needsRepo && activeProjectId && (
+                    <div className="px-6 pb-3">
+                      <GitHubRepoInput
+                        projectId={activeProjectId}
+                        owner={meta.owner ?? ""}
+                        currentRepo={meta.repo ?? ""}
+                      />
+                    </div>
+                  )}
+
+                  {isConnected && meta.repo && integration.type === "github" && (
+                    <div className="px-6 pb-3">
+                      <p className="text-xs text-muted-foreground">
+                        Watching: <span className="font-mono font-medium">{meta.owner}/{meta.repo}</span>
+                      </p>
+                    </div>
+                  )}
+
                   <Separator />
                   <CardContent className="flex items-center justify-between pt-4">
                     <span className="text-xs text-muted-foreground">

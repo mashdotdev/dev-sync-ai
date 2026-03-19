@@ -5,7 +5,6 @@ import { TRPCReactProvider } from "@/trpc/client";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import Header from "@/components/navbar";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -30,13 +29,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn("font-sans", inter.variable,)}>
+    <html lang="en" className={cn("font-sans", inter.variable)}>
       <TRPCReactProvider>
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
           <TooltipProvider>
-            <Header />
             {children}
             <Toaster position="top-center" />
           </TooltipProvider>

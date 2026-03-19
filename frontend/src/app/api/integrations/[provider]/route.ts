@@ -7,7 +7,7 @@ const OAUTH_URLS: Record<string, (projectId: string) => string> = {
   github: (projectId) =>
     `https://github.com/login/oauth/authorize?client_id=${process.env.GITHUB_CLIENT_ID}&scope=repo&state=${projectId}`,
   notion: (projectId) =>
-    `https://api.notion.com/v1/oauth/authorize?client_id=${process.env.NOTION_CLIENT_ID}&response_type=code&owner=user&state=${projectId}`,
+    `https://api.notion.com/v1/oauth/authorize?client_id=${process.env.NOTION_CLIENT_ID}&response_type=code&owner=user&redirect_uri=${encodeURIComponent(`${process.env.NEXT_PUBLIC_APP_URL}/api/integrations/notion/callback`)}&state=${projectId}`,
   slack: (projectId) =>
     `https://slack.com/oauth/v2/authorize?client_id=${process.env.SLACK_CLIENT_ID}&scope=chat:write,channels:read&state=${projectId}`,
   linear: (projectId) =>

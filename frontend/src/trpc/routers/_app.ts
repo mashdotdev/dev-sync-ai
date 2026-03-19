@@ -1,4 +1,5 @@
 import { createTRPCRouter } from "../init";
+import { agentRouter } from "./agent-router";
 import { integrationsRouter } from "./integrations-router";
 import { projectsRouter } from "./projects-router";
 import { reportsRouter } from "./reports-router";
@@ -11,6 +12,7 @@ export const appRouter = createTRPCRouter({
   integrations: integrationsRouter,
   syncEvents: syncEventsRouter,
   reports: reportsRouter,
+  agent: agentRouter,
 });
 
 export type AppRouter = typeof appRouter;
