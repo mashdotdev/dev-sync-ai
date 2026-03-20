@@ -8,7 +8,6 @@ import {
   Settings,
   CreditCard,
   LogOut,
-  Zap,
   ChevronUp,
 } from "lucide-react";
 import Link from "next/link";
@@ -33,7 +32,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
 import { authClient } from "@/utils/auth-client";
 
 const navItems = [
@@ -73,17 +71,22 @@ export function AppSidebar() {
 
   return (
     <Sidebar collapsible="icon">
-      <SidebarHeader>
+      {/* Brand header */}
+      <SidebarHeader className="border-b border-sidebar-border">
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
               <Link href="/dashboard">
-                <div className="bg-primary text-primary-foreground flex size-8 items-center justify-center rounded-lg">
-                  <Zap className="size-4" />
+                <div className="w-6 h-6 bg-white rounded-sm flex items-center justify-center shrink-0">
+                  <div className="w-3 h-3 border-2 border-[#09090f]" />
                 </div>
-                <div className="flex flex-col gap-0.5 leading-none">
-                  <span className="font-semibold">DevSync AI</span>
-                  <span className="text-muted-foreground text-xs">Project Manager</span>
+                <div className="flex flex-col gap-0 leading-none">
+                  <span className="font-semibold tracking-tight text-sidebar-foreground">
+                    DevSync<span className="text-[#6366f1]">AI</span>
+                  </span>
+                  <span className="text-[11px] text-sidebar-foreground/40">
+                    Project Manager
+                  </span>
                 </div>
               </Link>
             </SidebarMenuButton>
@@ -92,57 +95,80 @@ export function AppSidebar() {
       </SidebarHeader>
 
       <SidebarContent>
+        {/* Main nav */}
         <SidebarGroup>
-          <SidebarGroupLabel>Navigation</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-sidebar-foreground/30 uppercase tracking-wider text-[10px]">
+            Navigation
+          </SidebarGroupLabel>
           <SidebarMenu>
-            {navItems.map((item) => (
-              <SidebarMenuItem key={item.href}>
-                <SidebarMenuButton asChild isActive={isActive(item.href, item.exact)}>
-                  <Link href={item.href}>
-                    <item.icon />
-                    <span>{item.label}</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ))}
+            {navItems.map((item) => {
+              const active = isActive(item.href, item.exact);
+              return (
+                <SidebarMenuItem key={item.href}>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={active}
+                    className={active ? "text-[#6366f1]" : "text-sidebar-foreground/60 hover:text-sidebar-foreground"}
+                  >
+                    <Link href={item.href}>
+                      <item.icon />
+                      <span>{item.label}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              );
+            })}
           </SidebarMenu>
         </SidebarGroup>
 
+        {/* Account nav */}
         <SidebarGroup>
-          <SidebarGroupLabel>Account</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-sidebar-foreground/30 uppercase tracking-wider text-[10px]">
+            Account
+          </SidebarGroupLabel>
           <SidebarMenu>
-            {bottomItems.map((item) => (
-              <SidebarMenuItem key={item.href}>
-                <SidebarMenuButton asChild isActive={isActive(item.href)}>
-                  <Link href={item.href}>
-                    <item.icon />
-                    <span>{item.label}</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ))}
+            {bottomItems.map((item) => {
+              const active = isActive(item.href);
+              return (
+                <SidebarMenuItem key={item.href}>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={active}
+                    className={active ? "text-[#6366f1]" : "text-sidebar-foreground/60 hover:text-sidebar-foreground"}
+                  >
+                    <Link href={item.href}>
+                      <item.icon />
+                      <span>{item.label}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              );
+            })}
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter>
+      {/* User footer */}
+      <SidebarFooter className="border-t border-sidebar-border">
         <SidebarMenu>
           <SidebarMenuItem>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <SidebarMenuButton size="lg">
-                  <Avatar className="size-8 rounded-lg">
+                <SidebarMenuButton size="lg" className="text-sidebar-foreground/80 hover:text-sidebar-foreground">
+                  <Avatar className="size-7 rounded-lg border border-white/10">
                     <AvatarImage src={user?.image ?? undefined} alt={user?.name ?? "User"} />
-                    <AvatarFallback className="rounded-lg">{initials}</AvatarFallback>
+                    <AvatarFallback className="rounded-lg bg-[#6366f1]/20 text-[#6366f1] text-xs font-semibold">
+                      {initials}
+                    </AvatarFallback>
                   </Avatar>
-                  <div className="flex flex-1 flex-col gap-0.5 text-left leading-none">
-                    <span className="truncate font-medium text-sm">{user?.name ?? "User"}</span>
-                    <span className="truncate text-muted-foreground text-xs">{user?.email}</span>
+                  <div className="flex flex-1 flex-col gap-0 text-left leading-none">
+                    <span className="truncate text-sm font-medium">{user?.name ?? "User"}</span>
+                    <span className="truncate text-xs text-sidebar-foreground/40">{user?.email}</span>
                   </div>
-                  <Badge variant="secondary" className="text-xs capitalize">
+                  <span className="ml-auto text-[10px] font-medium bg-[#6366f1]/15 text-[#6366f1] px-1.5 py-0.5 rounded-sm uppercase tracking-wider">
                     free
-                  </Badge>
-                  <ChevronUp className="ml-auto size-4" />
+                  </span>
+                  <ChevronUp className="size-3.5 text-sidebar-foreground/30" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent side="top" className="w-[--radix-popper-anchor-width]">

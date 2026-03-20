@@ -1,17 +1,20 @@
-import React from "react";
-
 const CTA = () => {
   return (
-    <section className="p-10 h-[50vh]">
-      <div className="bg-white/2 size-full rounded-xl flex flex-col items-center justify-center gap-6">
-        <h3 className="text-5xl lg:text-7xl ">Ready to claim your time?</h3>
-        <p className="text-muted-foreground">
-          Join over 1,500+ freelance developers who have automated their project
-          management with DevSync AI.
+    <section className="py-24 border-y border-white/[0.06] relative overflow-hidden bg-[#0a0a14]">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(99,102,241,0.08)_0%,transparent_50%)]" />
+      <div className="max-w-[800px] mx-auto px-6 text-center relative z-10">
+        <h2 className="text-3xl md:text-5xl font-semibold tracking-tight text-white mb-4">
+          Stop writing updates. Start shipping.
+        </h2>
+        <p className="text-base text-white/60 mb-10">
+          Free during beta — no credit card required.
         </p>
-        <button className="bg-brand-primary text-white px-6 py-2 rounded-lg  font-semibold cursor-pointer transition-all transform hover:-translate-y-1">
-          Start today
-        </button>
+        <a
+          href="#"
+          className="inline-flex items-center justify-center bg-[#6366f1] text-white text-sm font-medium rounded-lg px-8 py-3 lp-glow-btn hover:bg-[#6366f1]/90 transition-all"
+        >
+          Get Early Access
+        </a>
       </div>
     </section>
   );

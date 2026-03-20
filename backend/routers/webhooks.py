@@ -143,11 +143,12 @@ Reply ONLY with a JSON object like this (no markdown):
                 continue  # already updated this ticket
             seen_ticket_ids.add(ticket_id)
             try:
+                logger.info("[sync:%s] updating ticket %s (%s) → %s", project_id, match["ticket_title"], ticket_id, match["new_status"])
                 await notion.update_page_status(notion_token, ticket_id, match["new_status"])
                 tickets_updated.append(f"{match['ticket_title']} → {match['new_status']}")
                 logger.info("[sync:%s] updated ticket: %s", project_id, match["ticket_title"])
             except Exception as e:
-                logger.warning("[sync:%s] notion status update failed for %s: %s", project_id, ticket_id, e)
+                logger.warning("[sync:%s] notion status update failed for %s (%s → %s): %s", project_id, ticket_id, match["ticket_title"], match["new_status"], e)
 
         # ── 4. Post Slack summary ────────────────────────────────────────────
         slack_summary = ""

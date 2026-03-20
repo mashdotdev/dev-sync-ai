@@ -1,34 +1,46 @@
+import Link from "next/link";
+
 const Navbar = () => {
   return (
-    <nav className="fixed top-0 w-full z-50 px-6 py-4">
-      <div className="max-w-7xl mx-auto flex items-center justify-between glass-effect px-6 py-3 rounded-full text-brand-white backdrop-blur-2xl">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-xs">D</span>
+    <nav className="fixed top-0 w-full z-50 lp-glass-nav transition-all duration-300">
+      <div className="max-w-[1200px] mx-auto px-6 h-16 flex items-center justify-between">
+        <div className="flex items-center gap-2 cursor-pointer">
+          <div className="w-6 h-6 bg-white rounded-sm flex items-center justify-center">
+            <div className="w-3 h-3 border-2 border-[#09090f]" />
           </div>
-          <span className="font-bold text-lg tracking-tight">DevSync AI</span>
+          <span className="font-semibold text-base tracking-tight text-white">
+            DevSync<span className="text-[#6366f1] ml-0.5">AI</span>
+          </span>
         </div>
-        <div className="hidden md:flex items-center gap-8 text-sm font-medium text-brand-white">
-          <a className="hover:text-brand-primary transition-colors" href="#">
-            Product
-          </a>
-          <a className="hover:text-brand-primary transition-colors" href="#">
+
+        <div className="hidden md:flex items-center gap-8">
+          <Link href="#features" className="text-sm text-white/70 hover:text-white transition-colors">
+            Features
+          </Link>
+          <Link href="#integrations" className="text-sm text-white/70 hover:text-white transition-colors">
+            Integrations
+          </Link>
+          <Link href="#pricing" className="text-sm text-white/70 hover:text-white transition-colors">
             Pricing
-          </a>
-          <a className="hover:text-brand-primary transition-colors" href="#">
+          </Link>
+          <Link href="#docs" className="text-sm text-white/70 hover:text-white transition-colors">
             Docs
-          </a>
+          </Link>
         </div>
+
         <div className="flex items-center gap-4">
-          <a
-            className="text-sm font-medium text-brand-white hover:text-slate-900"
-            href="#"
+          <Link
+            href="/sign-in"
+            className="hidden sm:block text-sm text-white/70 hover:text-white transition-colors"
           >
             Sign in
-          </a>
-          <button className="bg-brand-white text-brand-black px-5 py-2 rounded-full text-sm font-medium hover:bg-slate-800 transition-all">
-            Get Started
-          </button>
+          </Link>
+          <Link
+            href="/sign-up"
+            className="bg-[#6366f1] hover:bg-[#6366f1]/90 text-white text-sm font-medium rounded-lg px-4 py-2 transition-colors"
+          >
+            Get Early Access
+          </Link>
         </div>
       </div>
     </nav>

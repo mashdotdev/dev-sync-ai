@@ -40,6 +40,8 @@ async def get_database_items(token: str, database_id: str) -> list[dict]:
 
 
 async def update_page_status(token: str, page_id: str, status: str, prop_name: str = "Status") -> dict:
+    last_status = 0
+    last_body = ""
     async with httpx.AsyncClient() as client:
         # Try Notion `status` type first, fall back to `select`
         for payload_type in ("status", "select"):
@@ -50,7 +52,9 @@ async def update_page_status(token: str, page_id: str, status: str, prop_name: s
             )
             if r.is_success:
                 return {"ok": True, "page_id": page_id, "status": status, "type": payload_type}
-    raise ValueError(f"Notion update failed ({r.status_code}): {r.text}")
+            last_status = r.status_code
+            last_body = r.text
+    raise ValueError(f"Notion update failed {last_status}: {last_body}")
 
 
 async def add_page_comment(token: str, page_id: str, text: str) -> dict:

@@ -13,13 +13,17 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
   if (!session) redirect("/sign-in");
 
   return (
-    <SidebarProvider>
-      <AppSidebar />
-      <SidebarInset>
-        <DashboardHeader />
-        <main className="flex flex-1 flex-col gap-4 p-6">{children}</main>
-      </SidebarInset>
-    </SidebarProvider>
+    <div className="dark">
+      <SidebarProvider>
+        <AppSidebar />
+        <SidebarInset>
+          <DashboardHeader />
+          <main className="flex flex-1 flex-col gap-6 p-6 bg-background">
+            {children}
+          </main>
+        </SidebarInset>
+      </SidebarProvider>
+    </div>
   );
 };
 
